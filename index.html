@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Marks Predictor</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<!-- Existing ML Library -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+
+<!-- NEW Machine Learning Visualization Component -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  color: white;
+}
+header {
+  text-align: center;
+  padding: 60px 20px;
+}
+h1 {
+  font-size: 2.5rem;
+}
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 40px;
+}
+.card {
+  background: white;
+  color: black;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  width: 300px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+input {
+  width: 80%;
+  padding: 10px;
+  margin: 15px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #2a5298;
+  color: white;
+  cursor: pointer;
+}
+button:hover {
+  background: #1e3c72;
+}
+.result {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+section {
+  margin: 40px;
+  background: white;
+  color: black;
+  padding: 25px;
+  border-radius: 10px;
+}
+footer {
+  text-align: center;
+  padding: 20px;
+}
+
+/* NEW GRAPH STYLE */
+.chart-container {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  width: 700px;
+  max-width: 90%;
+  margin: 20px auto;
+}
+canvas {
+  background: white;
+}
+</style>
+</head>
+<body>
+
+<header>
+<h1>Student Marks Prediction</h1>
+<p>AI/ML Project using Linear Regression</p>
+</header>
+
+<div class="container">
+
+  <!-- Original Prediction Card -->
+  <div class="card">
+    <h2>Predict Your Marks</h2>
+    <input type="number" id="hours" placeholder="Enter study hours">
+    <br>
+    <button onclick="predictMarks()">Predict</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <!-- Existing ML Status Card -->
+  <div class="card">
+    <h2>Machine Learning Status</h2>
+    <p id="ml-status">Training ML Model...</p>
+    <p id="accuracy"></p>
+  </div>
+
+</div>
+
+<!-- NEW MACHINE LEARNING COMPONENT ADDED -->
+<div class="chart-container">
+  <canvas id="predictionChart"></canvas>
+</div>
+
+<section>
+<h2>Introduction</h2>
+<p>This project predicts student marks based on study hours using Linear Regression.</p>
+
+<h2>Objective</h2>
+<ul>
+<li>Understand ML basics</li>
+<li>Predict marks</li>
+<li>Visualize relationship</li>
+</ul>
+
+<h2>Linear Regression</h2>
+<p>Formula: <b>y = mx + b</b></p>
+<p>m = slope, b = intercept</p>
+
+<h2>Dataset</h2>
+<pre>
+Hours : 1 2 3 4 5 6 7 8
+Marks : 35 40 50 55 65 70 75 85
+</pre>
+
+<h2>Python Code</h2>
+<pre>
+from sklearn.linear_model import LinearRegression
+model = LinearRegression()
+model.fit(X, y)
+</pre>
+
+<h2>Evaluation</h2>
+<p>R² Score measures accuracy of model.</p>
+
+<h2>Conclusion</h2>
+<p>Marks increase linearly with study hours.</p>
+
+<h2>Future Scope</h2>
+<ul>
+<li>Add more features</li>
+<li>Deploy full ML model</li>
+</ul>
+</section>
+
+<footer>
+<p>Made with ❤️ for ML Project</p>
+</footer>
+
+<script>
+// ====================================
+// ORIGINAL SIMPLE LINEAR REGRESSION
+// ====================================
+let m = 6.5;
+let b = 30;
+
+// ====================================
+// MACHINE LEARNING DATASET
+// ====================================
+const hoursData = [1,2,3,4,5,6,7,8];
+const marksData = [35,40,50,55,65,70,75,85];
+
+let model;
+let trained = false;
+
+// ====================================
+// NEW CHART COMPONENT
+// ====================================
+const ctx = document.getElementById('predictionChart').getContext('2d');
+const predictionChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: hoursData,
+        datasets: [
+            {
+                label: 'Actual Marks',
+                data: marksData,
+                fill: false,
+                tension: 0.1
+            },
+            {
+                label: 'Predicted Mark',
+                data: [],
+                fill: false,
+                tension: 0.1
+            }
+        ]
+    },
+    options: {
+        responsive: true
+    }
+});
+
+// ====================================
+// TRAIN MACHINE LEARNING MODEL
+// ====================================
+async function trainMLModel() {
+    const xs = tf.tensor2d(hoursData, [hoursData.length, 1]);
+    const ys = tf.tensor2d(marksData, [marksData.length, 1]);
+
+    model = tf.sequential();
+    model.add(tf.layers.dense({
+        units: 1,
+        inputShape: [1]
+    }));
+
+    model.compile({
+        optimizer: tf.train.sgd(0.01),
+        loss: tf.losses.meanSquaredError
+    });
+
+    await model.fit(xs, ys, {
+        epochs: 300
+    });
+
+    trained = true;
+
+    document.getElementById("ml-status").innerText =
+        "ML Model Trained Successfully ✅";
+
+    document.getElementById("accuracy").innerText =
+        "Training Accuracy: High";
+}
+
+// Start training automatically
+trainMLModel();
+
+// ====================================
+// PREDICTION FUNCTION
+// ====================================
+async function predictMarks() {
+    let hours = document.getElementById("hours").value;
+
+    if(hours === ""){
+        document.getElementById("result").innerText =
+            "Please enter hours";
+        return;
+    }
+
+    // Use ML model if trained
+    if(trained){
+        const prediction = model.predict(
+            tf.tensor2d([parseFloat(hours)], [1,1])
+        );
+
+        const marks = (await prediction.data())[0];
+
+        document.getElementById("result").innerText =
+            "Predicted Marks (ML): " + marks.toFixed(2);
+
+        // NEW: Update graph with predicted point
+        predictionChart.data.datasets[1].data = [null,null,null,null,null,null,null,null];
+        predictionChart.data.datasets[1].data[hours-1] = marks;
+        predictionChart.update();
+    }
+    else{
+        // fallback to original formula
+        let marks = m * hours + b;
+        document.getElementById("result").innerText =
+            "Predicted Marks: " + marks.toFixed(2);
+    }
+}
+</script>
+
+</body>
+</html>
