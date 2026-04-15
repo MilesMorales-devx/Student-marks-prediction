@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Student Marks Predictor</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <!-- Existing ML Library -->
@@ -13,174 +14,180 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
-body {
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #0f172a, #1e3a8a, #2563eb);
-  color: white;
-  min-height: 100vh;
+body{
+font-family:'Poppins',sans-serif;
+background:linear-gradient(135deg,#0f172a,#1e3a8a,#2563eb);
+color:white;
+min-height:100vh;
 }
 
-/* HERO HEADER LIKE TARGET WEBSITE */
-header {
-  text-align: center;
-  padding: 80px 20px 50px;
+header{
+text-align:center;
+padding:80px 20px 50px;
 }
 
-header h1 {
-  font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 12px;
+header h1{
+font-size:3rem;
+font-weight:700;
+margin-bottom:12px;
 }
 
-header p {
-  font-size: 1.2rem;
-  opacity: 0.9;
+header p{
+font-size:1.2rem;
+opacity:.9;
 }
 
-/* MAIN CONTAINER */
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-  gap: 30px;
-  flex-wrap: wrap;
-  padding: 20px;
+.container{
+display:flex;
+justify-content:center;
+align-items:stretch;
+gap:30px;
+flex-wrap:wrap;
+padding:20px;
 }
 
-/* GLASS CARD STYLE LIKE EMERGENT UI */
-.card {
-  background: rgba(255,255,255,0.12);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255,255,255,0.15);
-  color: white;
-  padding: 30px;
-  border-radius: 24px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-  width: 340px;
-  text-align: center;
-  transition: 0.3s ease;
+.card{
+background:rgba(255,255,255,0.12);
+backdrop-filter:blur(15px);
+border:1px solid rgba(255,255,255,0.15);
+color:white;
+padding:30px;
+border-radius:24px;
+box-shadow:0 20px 40px rgba(0,0,0,0.25);
+width:340px;
+text-align:center;
+transition:.3s ease;
+margin-bottom:20px;
 }
 
-.card:hover {
-  transform: translateY(-6px);
+.card:hover{
+transform:translateY(-6px);
 }
 
-.card h2 {
-  margin-bottom: 20px;
-  font-size: 1.5rem;
+.card h2{
+margin-bottom:20px;
+font-size:1.5rem;
 }
 
-/* INPUT STYLE */
-input {
-  width: 100%;
-  padding: 14px;
-  margin: 15px 0;
-  border-radius: 14px;
-  border: none;
-  outline: none;
-  font-size: 16px;
+input{
+width:100%;
+padding:14px;
+margin:15px 0;
+border-radius:14px;
+border:none;
+outline:none;
+font-size:16px;
 }
 
-/* BUTTON STYLE */
-button {
-  width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
+button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:14px;
+background:linear-gradient(135deg,#3b82f6,#2563eb);
+color:white;
+font-size:16px;
+font-weight:600;
+cursor:pointer;
+transition:.3s;
 }
 
-button:hover {
-  transform: scale(1.03);
+button:hover{
+transform:scale(1.03);
 }
 
-/* RESULT TEXT */
-.result {
-  margin-top: 20px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #facc15;
+.result{
+margin-top:20px;
+font-size:1.2rem;
+font-weight:bold;
+color:#facc15;
 }
 
-/* CHART SECTION */
-.chart-container {
-  width: 90%;
-  max-width: 900px;
-  margin: 40px auto;
-  background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(15px);
-  border-radius: 25px;
-  padding: 25px;
+.chart-container{
+width:90%;
+max-width:900px;
+margin:40px auto;
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(15px);
+border-radius:25px;
+padding:25px;
 }
 
-canvas {
-  background: white;
-  border-radius: 15px;
-  padding: 10px;
+canvas{
+background:white;
+border-radius:15px;
+padding:10px;
 }
 
-/* CONTENT SECTION */
-section {
-  width: 90%;
-  max-width: 1000px;
-  margin: 50px auto;
-  background: white;
-  color: #111827;
-  padding: 35px;
-  border-radius: 25px;
-  line-height: 1.8;
+section{
+width:90%;
+max-width:1000px;
+margin:50px auto;
+background:white;
+color:#111827;
+padding:35px;
+border-radius:25px;
+line-height:1.8;
 }
 
-section h2 {
-  margin-top: 20px;
-  margin-bottom: 10px;
-  color: #1e3a8a;
+section h2{
+margin-top:20px;
+margin-bottom:10px;
+color:#1e3a8a;
 }
 
-section ul {
-  margin-left: 20px;
+section ul{
+margin-left:20px;
 }
 
-pre {
-  background: #f3f4f6;
-  padding: 15px;
-  border-radius: 12px;
-  overflow-x: auto;
+pre{
+background:#f3f4f6;
+padding:15px;
+border-radius:12px;
+overflow-x:auto;
 }
 
-/* FOOTER */
-footer {
-  text-align: center;
-  padding: 30px;
-  font-size: 1rem;
-  opacity: 0.9;
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
 }
 
-/* RESPONSIVE */
+th,td{
+padding:12px;
+border:1px solid #ddd;
+text-align:center;
+}
+
+th{
+background:#1e3a8a;
+color:white;
+}
+
+footer{
+text-align:center;
+padding:30px;
+font-size:1rem;
+opacity:.9;
+}
+
 @media(max-width:768px){
-  header h1 {
-    font-size: 2.2rem;
-  }
-
-  .container {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .card {
-    width: 90%;
-  }
+header h1{
+font-size:2.2rem;
+}
+.container{
+flex-direction:column;
+align-items:center;
+}
+.card{
+width:90%;
+}
 }
 </style>
 </head>
@@ -193,26 +200,23 @@ footer {
 
 <div class="container">
 
-  <!-- Original Prediction Card -->
-  <div class="card">
-    <h2>Predict Your Marks</h2>
-    <input type="number" id="hours" placeholder="Enter study hours">
-    <button onclick="predictMarks()">Predict</button>
-    <div class="result" id="result"></div>
-  </div>
+<div class="card">
+<h2>Predict Your Marks</h2>
+<input type="number" id="hours" placeholder="Enter study hours">
+<button onclick="predictMarks()">Predict</button>
+<div class="result" id="result"></div>
+</div>
 
-  <!-- Existing ML Status Card -->
-  <div class="card">
-    <h2>Machine Learning Status</h2>
-    <p id="ml-status">Training ML Model...</p>
-    <p id="accuracy"></p>
-  </div>
+<div class="card">
+<h2>Machine Learning Status</h2>
+<p id="ml-status">Training ML Model...</p>
+<p id="accuracy"></p>
+</div>
 
 </div>
 
-<!-- Existing Machine Learning Chart -->
 <div class="chart-container">
-  <canvas id="predictionChart"></canvas>
+<canvas id="predictionChart"></canvas>
 </div>
 
 <section>
@@ -254,6 +258,46 @@ model.fit(X, y)
 <li>Add more features</li>
 <li>Deploy full ML model</li>
 </ul>
+
+<h2>AI/ML PROJECT</h2>
+<p>
+A machine learning application using Linear Regression to predict student marks based on study hours.
+This project demonstrates supervised learning and regression analysis.
+</p>
+
+<h2>Problem Statement</h2>
+<p>
+Understanding the relationship between study time and academic performance is crucial.
+This project predicts exam marks based on study hours.
+</p>
+
+<h2>Trained Model Parameters</h2>
+<pre>
+Equation: y = 8.19x + 19.96
+Slope (m): 8.1899
+Intercept (b): 19.9620
+</pre>
+
+<h2>Dataset Table</h2>
+<table>
+<tr><th>Study Hours</th><th>Marks</th></tr>
+<tr><td>2.5</td><td>40</td></tr>
+<tr><td>3</td><td>45</td></tr>
+<tr><td>4.5</td><td>58</td></tr>
+<tr><td>5.5</td><td>65</td></tr>
+<tr><td>6</td><td>70</td></tr>
+<tr><td>7</td><td>78</td></tr>
+<tr><td>8</td><td>85</td></tr>
+<tr><td>9</td><td>92</td></tr>
+</table>
+
+<div class="card" style="margin:auto;margin-top:30px;">
+<h2>Second Predictor</h2>
+<input type="number" id="hours2" placeholder="Enter hours (e.g. 5.5)">
+<button onclick="predictMarksSecond()">Calculate Prediction</button>
+<div class="result" id="result2"></div>
+</div>
+
 </section>
 
 <footer>
@@ -261,117 +305,94 @@ model.fit(X, y)
 </footer>
 
 <script>
-// ====================================
-// ORIGINAL SIMPLE LINEAR REGRESSION
-// ====================================
-let m = 6.5;
-let b = 30;
+let m=6.5;
+let b=30;
 
-// ====================================
-// MACHINE LEARNING DATASET
-// ====================================
-const hoursData = [1,2,3,4,5,6,7,8];
-const marksData = [35,40,50,55,65,70,75,85];
+const hoursData=[1,2,3,4,5,6,7,8];
+const marksData=[35,40,50,55,65,70,75,85];
 
 let model;
-let trained = false;
+let trained=false;
 
-// ====================================
-// CHART COMPONENT
-// ====================================
-const ctx = document.getElementById('predictionChart').getContext('2d');
-const predictionChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: hoursData,
-        datasets: [
-            {
-                label: 'Actual Marks',
-                data: marksData,
-                fill: false,
-                tension: 0.3
-            },
-            {
-                label: 'Predicted Mark',
-                data: [],
-                fill: false,
-                tension: 0.3
-            }
-        ]
-    },
-    options: {
-        responsive: true
-    }
+const ctx=document.getElementById('predictionChart').getContext('2d');
+
+const predictionChart=new Chart(ctx,{
+type:'line',
+data:{
+labels:hoursData,
+datasets:[
+{
+label:'Actual Marks',
+data:marksData,
+fill:false,
+tension:0.3
+},
+{
+label:'Predicted Mark',
+data:[],
+fill:false,
+tension:0.3
+}
+]
+},
+options:{
+responsive:true
+}
 });
 
-// ====================================
-// TRAIN MACHINE LEARNING MODEL
-// ====================================
-async function trainMLModel() {
-    const xs = tf.tensor2d(hoursData, [hoursData.length, 1]);
-    const ys = tf.tensor2d(marksData, [marksData.length, 1]);
+async function trainMLModel(){
+const xs=tf.tensor2d(hoursData,[hoursData.length,1]);
+const ys=tf.tensor2d(marksData,[marksData.length,1]);
 
-    model = tf.sequential();
-    model.add(tf.layers.dense({
-        units: 1,
-        inputShape: [1]
-    }));
+model=tf.sequential();
+model.add(tf.layers.dense({
+units:1,
+inputShape:[1]
+}));
 
-    model.compile({
-        optimizer: tf.train.sgd(0.01),
-        loss: tf.losses.meanSquaredError
-    });
+model.compile({
+optimizer:tf.train.sgd(0.01),
+loss:tf.losses.meanSquaredError
+});
 
-    await model.fit(xs, ys, {
-        epochs: 300
-    });
+await model.fit(xs,ys,{epochs:300});
 
-    trained = true;
-
-    document.getElementById("ml-status").innerText =
-        "ML Model Trained Successfully ✅";
-
-    document.getElementById("accuracy").innerText =
-        "Training Accuracy: High";
+trained=true;
+document.getElementById("ml-status").innerText="ML Model Trained Successfully ✅";
+document.getElementById("accuracy").innerText="Training Accuracy: High";
 }
 
 trainMLModel();
 
-// ====================================
-// PREDICTION FUNCTION
-// ====================================
-async function predictMarks() {
-    let hours = document.getElementById("hours").value;
+async function predictMarks(){
+let hours=document.getElementById("hours").value;
 
-    if(hours === ""){
-        document.getElementById("result").innerText =
-            "Please enter hours";
-        return;
-    }
+if(hours===""){
+document.getElementById("result").innerText="Please enter hours";
+return;
+}
 
-    if(trained){
-        const prediction = model.predict(
-            tf.tensor2d([parseFloat(hours)], [1,1])
-        );
+if(trained){
+const prediction=model.predict(
+tf.tensor2d([parseFloat(hours)],[1,1])
+);
 
-        const marks = (await prediction.data())[0];
+const marks=(await prediction.data())[0];
 
-        document.getElementById("result").innerText =
-            "Predicted Marks (ML): " + marks.toFixed(2);
+document.getElementById("result").innerText=
+"Predicted Marks (ML): "+marks.toFixed(2);
 
-        predictionChart.data.datasets[1].data = [null,null,null,null,null,null,null,null];
-        if(hours >=1 && hours <=8){
-          predictionChart.data.datasets[1].data[hours-1] = marks;
-        }
-        predictionChart.update();
-    }
-    else{
-        let marks = m * hours + b;
-        document.getElementById("result").innerText =
-            "Predicted Marks: " + marks.toFixed(2);
-    }
+predictionChart.data.datasets[1].data=[null,null,null,null,null,null,null,null];
+
+if(hours>=1 && hours<=8){
+predictionChart.data.datasets[1].data[hours-1]=marks;
+}
+
+predictionChart.update();
+}else{
+let marks=m*hours+b;
+document.getElementById("result").innerText=
+"Predicted Marks: "+marks.toFixed(2);
+}
 }
 </script>
-
-</body>
-</html>
